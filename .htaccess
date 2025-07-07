@@ -1,0 +1,29 @@
+#
+# Dack's DND Tools - .htaccess
+# ============================
+# This file enables friendly URLs by redirecting all relevant requests
+# to the main index.php router.
+#
+
+# SECTION 1: ENABLE REWRITE ENGINE
+# This line activates the Apache URL rewriting module.
+RewriteEngine On
+
+# SECTION 2: REDIRECT BASE URL
+# This rule permanently redirects requests for the bare domain (e.g., yoursite.com)
+# to the /home URL (yoursite.com/home) for a consistent user experience.
+RewriteRule ^$ /home [R=301,L]
+
+# SECTION 3: EXCEPTION RULES
+# These conditions prevent the main routing rule from applying to requests
+# for actual files (like style.css or main.js) or existing directories.
+# This ensures that all site assets can be loaded correctly by the browser.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# SECTION 4: MAIN ROUTING RULE
+# This is the core rule for friendly URLs. It captures any requested URL that is not
+# a real file or directory and passes it to index.php as a 'url' parameter.
+# For example, a request for yoursite.com/about becomes a server-side request for
+# index.php?url=about, allowing PHP to handle the routing.
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
