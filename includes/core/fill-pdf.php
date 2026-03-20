@@ -9,14 +9,25 @@
 // SECTION 1: INITIALIZATION & LIBRARY REQUIREMENT
 // Ensure the FPDF and FPDI libraries are available.
 require_once __DIR__ . '/../lib/fpdf/fpdf.php';
-require_once __DIR__ . '/../lib/fpdi/src/autoload.php';
+require_once __DIR__ . '/../lib/fpdi/autoload.php';
 
 use setasign\Fpdi\Fpdi;
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Only process POST requests.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit('Method Not Allowed');
+}
+
+// Validate CSRF token from request header.
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+    http_response_code(403);
+    exit('Invalid CSRF token. Please refresh and try again.');
 }
 
 // Get the character data sent from the browser.

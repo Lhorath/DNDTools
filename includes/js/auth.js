@@ -28,6 +28,24 @@ const showMessage = (messageArea, message, isError = true) => {
     messageArea.classList.remove('hidden');
 };
 
+/**
+ * Reads the CSRF token emitted by the server in the page <head>.
+ * @returns {string}
+ */
+const getCsrfToken = () => {
+    const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+    return tokenMeta ? tokenMeta.getAttribute('content') || '' : '';
+};
+
+/**
+ * Builds default JSON headers with CSRF protection.
+ * @returns {Object}
+ */
+const buildSecureJsonHeaders = () => ({
+    'Content-Type': 'application/json',
+    'X-CSRF-Token': getCsrfToken()
+});
+
 
 // --- SECTION 2: REGISTRATION PAGE LOGIC ---
 // ==========================================
@@ -80,7 +98,7 @@ const initRegistration = () => {
         try {
             const response = await fetch('includes/user/register.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: buildSecureJsonHeaders(),
                 body: JSON.stringify(formData),
             });
             const result = await response.json();
@@ -122,7 +140,7 @@ const initLogin = () => {
         try {
             const response = await fetch('includes/user/login.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: buildSecureJsonHeaders(),
                 body: JSON.stringify(formData),
             });
             const result = await response.json();
@@ -188,7 +206,7 @@ const initProfile = () => {
             try {
                 const response = await fetch('includes/user/update_profile.php', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: buildSecureJsonHeaders(),
                     body: JSON.stringify(formData),
                 });
                 const result = await response.json();
@@ -227,7 +245,7 @@ const initProfile = () => {
             try {
                 const response = await fetch('includes/user/change_password.php', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: buildSecureJsonHeaders(),
                     body: JSON.stringify(formData),
                 });
                 const result = await response.json();

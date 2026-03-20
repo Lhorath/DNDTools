@@ -6,7 +6,6 @@
     redesigned to be more substantial and visually consistent with the site theme.
 */
 ?>
-    </main> <!-- This closes the <main> tag opened in core/body.php -->
 
     <!--
         SECTION 1: SITE FOOTER

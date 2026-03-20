@@ -27,6 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Validate CSRF token from request header.
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Invalid CSRF token. Please refresh and try again.']);
+    exit;
+}
+
 $input = json_decode(file_get_contents('php://input'), true);
 
 // Perform basic validation to ensure fields are not empty.
@@ -56,6 +64,8 @@ if ($result->num_rows === 1) {
 
     // Verify the submitted password against the securely stored hash from the database.
     if (password_verify($password, $user['password'])) {
+        // Regenerate the session ID on login to prevent session fixation.
+        session_regenerate_id(true);
         // If the password is correct, create session variables to log the user in.
         $_SESSION['loggedin'] = true;
         $_SESSION['user_id'] = $user['id'];

@@ -10,8 +10,8 @@
 // --- SECTION 1: INITIALIZATION AND HEADERS ---
 // Set the content type to application/json so browsers interpret the output correctly.
 header('Content-Type: application/json');
-// Include the database configuration file.
-require_once '../functions/config.php';
+// Use the same database config as the rest of the app.
+require_once __DIR__ . '/../includes/core/config.php';
 
 // --- SECTION 2: GET PARAMETERS ---
 // Retrieve and sanitize all possible URL parameters.
@@ -20,6 +20,8 @@ $query = isset($_GET['query']) ? trim($_GET['query']) : '';
 $index = isset($_GET['index']) ? trim($_GET['index']) : ''; // For fetching a single item
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+$page = max(1, $page);
+$limit = max(1, min($limit, 100));
 $offset = ($page - 1) * $limit;
 
 // --- SECTION 3: VALIDATION ---

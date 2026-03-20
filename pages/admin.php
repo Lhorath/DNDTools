@@ -33,7 +33,7 @@ $current_view = isset($_GET['view']) ? $_GET['view'] : 'stats';
         This main element takes up 3/4 of the width on large screens and displays the content
         for the currently selected admin view.
     -->
-    <main class="lg:w-3/4">
+    <div class="lg:w-3/4">
         
         <!-- This area is reserved for displaying "flash messages" -->
         <?php if(isset($_SESSION['flash_message'])): ?>
@@ -108,7 +108,7 @@ $current_view = isset($_GET['view']) ? $_GET['view'] : 'stats';
                 break;
         endswitch;
         ?>
-    </main>
+    </div>
 
     <!-- 
         SECTION 4: SIDEBAR AREA

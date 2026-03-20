@@ -33,6 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Validate CSRF token from request header.
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Invalid CSRF token. Please refresh and try again.']);
+    exit;
+}
+
 $input = json_decode(file_get_contents('php://input'), true);
 
 // Perform server-side validation on all required fields.

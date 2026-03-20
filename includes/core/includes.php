@@ -13,8 +13,32 @@
 // =============================
 // Start a new session or resume the existing one on every page load. This must
 // be done before any HTML is outputted.
+$is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
+
 if (session_status() === PHP_SESSION_NONE) {
+    // Harden session handling defaults.
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.cookie_secure', $is_https ? '1' : '0');
+    if (PHP_VERSION_ID >= 70300) {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'secure' => $is_https,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    } else {
+        ini_set('session.cookie_samesite', 'Lax');
+    }
     session_start();
+}
+
+// Create a per-session CSRF token for state-changing requests.
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 

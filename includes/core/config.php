@@ -10,10 +10,10 @@
 // These variables hold the connection details for your database.
 // It is a security best practice to load these from environment variables
 // rather than hardcoding them directly in the file.
-$servername = "srv1846.hstgr.io";
-$username = "u971098166_dndtools";
-$password = "KqlDiXPX>+q4";
-$dbname = "u971098166_websitedb";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "dnd_tools";
 
 
 // SECTION 2: ESTABLISH CONNECTION

@@ -22,6 +22,8 @@ $query = isset($_GET['query']) ? trim($_GET['query']) : '';
 $index = isset($_GET['index']) ? trim($_GET['index']) : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
+$page = max(1, $page);
+$limit = max(1, min($limit, 100));
 $offset = ($page - 1) * $limit;
 
 // SECTION 3: SECURITY & VALIDATION
