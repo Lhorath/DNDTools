@@ -13,8 +13,10 @@
 // =============================
 // Start a new session or resume the existing one on every page load. This must
 // be done before any HTML is outputted.
-$is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-    || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443);
+$forwarded_proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) : '';
+$is_https = ($forwarded_proto === 'https')
+    || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
 
 if (session_status() === PHP_SESSION_NONE) {
     // Harden session handling defaults.
@@ -47,14 +49,30 @@ if (empty($_SESSION['csrf_token'])) {
 // Define constants for clean and consistent file paths and URLs throughout the application.
 
 // The absolute server path to the project's root directory.
-// Example: /var/www/html/dnd-tools/
+// Example: D:/GitHub/DNDTools/ or /var/www/html/dnd-tools/
 define('ROOT_PATH', dirname(__DIR__, 2) . '/');
 
-// The base URL of the site, determined dynamically to work on any server.
-// Example: http://localhost/dnd-tools/ or https://www.dackstools.com/
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$domainName = $_SERVER['HTTP_HOST'];
-define('BASE_URL', $protocol . $domainName . '/');
+require_once ROOT_PATH . 'includes/core/config.php';
+
+// The base URL of the site. Production: http://dndtools.dackdns.ddns.net/
+// (detected from the request unless $SITE_BASE_URL is set in config.php).
+if (!empty($SITE_BASE_URL)) {
+    $base = $SITE_BASE_URL;
+    if (substr($base, -1) !== '/') {
+        $base .= '/';
+    }
+    define('BASE_URL', $base);
+} else {
+    if ($forwarded_proto === 'https') {
+        $protocol = 'https://';
+    } elseif ($forwarded_proto === 'http') {
+        $protocol = 'http://';
+    } else {
+        $protocol = $is_https ? 'https://' : 'http://';
+    }
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    define('BASE_URL', $protocol . $host . '/');
+}
 
 
 // SECTION 3: URL ROUTING
@@ -78,8 +96,6 @@ $url_params = $url_parts;
 
 // SECTION 4: DATABASE CONNECTION
 // ==============================
-// Include the database configuration file. This establishes the connection
-// and makes the global $conn variable available to any script that includes this file.
-require_once ROOT_PATH . 'includes/core/config.php';
+// $conn is created in includes/core/config.php (loaded above).
 
 ?>

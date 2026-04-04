@@ -1,29 +1,26 @@
 #
 # Dack's DND Tools - .htaccess
 # ============================
-# This file enables friendly URLs by redirecting all relevant requests
-# to the main index.php router.
+# Friendly URLs for Apache. Document root should be the project folder
+# (e.g. D:\GitHub\DNDTools on a local Apache instance, or the same path on the server).
+#
+# Public URL: http://dndtools.dackdns.ddns.net/
 #
 
-# SECTION 1: ENABLE REWRITE ENGINE
-# This line activates the Apache URL rewriting module.
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    RewriteEngine On
 
-# SECTION 2: REDIRECT BASE URL
-# This rule permanently redirects requests for the bare domain (e.g., yoursite.com)
-# to the /home URL (yoursite.com/home) for a consistent user experience.
-RewriteRule ^$ /home [R=301,L]
+    # Site is served from the domain root. If you ever move the app into a
+    # subdirectory, set this to that path (e.g. /dndtools/).
+    RewriteBase /
 
-# SECTION 3: EXCEPTION RULES
-# These conditions prevent the main routing rule from applying to requests
-# for actual files (like style.css or main.js) or existing directories.
-# This ensures that all site assets can be loaded correctly by the browser.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+    # Bare domain → /home (matches public URL above).
+    RewriteRule ^$ /home [R=301,L]
 
-# SECTION 4: MAIN ROUTING RULE
-# This is the core rule for friendly URLs. It captures any requested URL that is not
-# a real file or directory and passes it to index.php as a 'url' parameter.
-# For example, a request for yoursite.com/about becomes a server-side request for
-# index.php?url=about, allowing PHP to handle the routing.
-RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+    # Skip rewrite for real files and directories (assets, PHP scripts under /includes, etc.).
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Route /path/to/page → index.php?url=path/to/page
+    RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+</IfModule>

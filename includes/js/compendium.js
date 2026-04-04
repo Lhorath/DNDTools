@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = `<p class="text-muted text-center p-8">Fetching data...</p>`;
         paginationControls.innerHTML = '';
         try {
-            const response = await fetch(`includes/core/search.php?category=${category}&page=${page}&query=${encodeURIComponent(query)}`);
+            const response = await fetch(`/includes/core/search.php?category=${category}&page=${page}&query=${encodeURIComponent(query)}`);
             if (!response.ok) throw new Error('Network response was not ok.');
             const data = await response.json();
             if (data.error || !data.results) throw new Error(data.error || 'No results found.');
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (itemButton) {
                 try {
                     const itemData = JSON.parse(itemButton.getAttribute('data-item'));
-                    fetch(`includes/core/search.php?category=${currentCategory}&index=${itemData.index}`)
+                    fetch(`/includes/core/search.php?category=${currentCategory}&index=${itemData.index}`)
                         .then(res => res.json())
                         .then(detailData => {
                             if (detailData.results && detailData.results.length > 0) {

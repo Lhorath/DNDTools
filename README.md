@@ -4,6 +4,6 @@ Description: The Original DnD Tools Website
 
 GitHub: https://github.com/Lhorath/DNDTools
 
-Live: http://dnddev.nerdygamertools.com/
+Live: http://dndtools.dackdns.ddns.net/
 
 # DND Tools

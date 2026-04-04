@@ -6,6 +6,11 @@
     sensitive credentials and should be handled with care.
 */
 
+// Public site URL with trailing slash, e.g. http://dndtools.dackdns.ddns.net/
+// Leave empty so BASE_URL is built from the request (HTTP_HOST). Set this only
+// if your server reports the wrong host or scheme (some reverse proxies).
+$SITE_BASE_URL = '';
+
 // SECTION 1: DATABASE CREDENTIALS
 // These variables hold the connection details for your database.
 // It is a security best practice to load these from environment variables

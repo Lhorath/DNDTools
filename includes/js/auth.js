@@ -96,7 +96,7 @@ const initRegistration = () => {
         showMessage(messageArea, "Processing...", false);
 
         try {
-            const response = await fetch('includes/user/register.php', {
+            const response = await fetch('/includes/user/register.php', {
                 method: 'POST',
                 headers: buildSecureJsonHeaders(),
                 body: JSON.stringify(formData),
@@ -138,7 +138,7 @@ const initLogin = () => {
         };
         showMessage(messageArea, "Logging in...", false);
         try {
-            const response = await fetch('includes/user/login.php', {
+            const response = await fetch('/includes/user/login.php', {
                 method: 'POST',
                 headers: buildSecureJsonHeaders(),
                 body: JSON.stringify(formData),
@@ -146,7 +146,7 @@ const initLogin = () => {
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || 'An unknown error occurred.');
             // On successful login, redirect to the home page.
-            window.location.href = 'home';
+            window.location.href = '/home';
         } catch (error) {
             showMessage(messageArea, error.message);
         }
@@ -204,7 +204,7 @@ const initProfile = () => {
             };
             showMessage(messageArea, 'Saving...', false);
             try {
-                const response = await fetch('includes/user/update_profile.php', {
+                const response = await fetch('/includes/user/update_profile.php', {
                     method: 'POST',
                     headers: buildSecureJsonHeaders(),
                     body: JSON.stringify(formData),
@@ -243,7 +243,7 @@ const initProfile = () => {
             showMessage(messageArea, 'Updating password...', false);
             
             try {
-                const response = await fetch('includes/user/change_password.php', {
+                const response = await fetch('/includes/user/change_password.php', {
                     method: 'POST',
                     headers: buildSecureJsonHeaders(),
                     body: JSON.stringify(formData),

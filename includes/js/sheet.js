@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 let items = options;
                 if (category) {
-                    const response = await secureFetch(`includes/core/search.php?category=${category}`);
+                    const response = await secureFetch(`/includes/core/search.php?category=${category}`);
                     const data = await response.json();
                     if (data.error || !data.results) throw new Error(data.error || `Failed to load ${category}`);
                     items = data.results;
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!classIndex) { subclassWrapper.classList.add('hidden'); return; }
 
             try {
-                const response = await secureFetch(`includes/core/search.php?category=classes&index=${classIndex}`);
+                const response = await secureFetch(`/includes/core/search.php?category=classes&index=${classIndex}`);
                 const data = (await response.json()).results[0];
                 
                 if (document.getElementById('hit-dice')) { document.getElementById('hit-dice').value = `1d${data.hit_die}`; document.getElementById('hit-dice').dataset.autoAdded = "class"; }
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!raceIndex) { subraceWrapper.classList.add('hidden'); return; }
             
             try {
-                const response = await secureFetch(`includes/core/search.php?category=races&index=${raceIndex}`);
+                const response = await secureFetch(`/includes/core/search.php?category=races&index=${raceIndex}`);
                 const data = (await response.json()).results[0];
                 
                 if (document.getElementById('speed')) { document.getElementById('speed').value = data.speed; document.getElementById('speed').dataset.autoAdded = "race"; }
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const backgroundIndex = event.target.value;
             if (!backgroundIndex) return;
             try {
-                const response = await secureFetch(`includes/core/search.php?category=backgrounds&index=${backgroundIndex}`);
+                const response = await secureFetch(`/includes/core/search.php?category=backgrounds&index=${backgroundIndex}`);
                 const data = (await response.json()).results[0];
                 
                 if(data.personality_traits) document.getElementById('personality-traits').value = data.personality_traits;
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!query) { resultsContainer.innerHTML = ''; return; }
                 resultsContainer.innerHTML = `<div class="search-results-list"><p class="p-2 text-muted">Searching...</p></div>`;
                 try {
-                    const response = await secureFetch(`includes/core/search.php?category=${options.apiEndpoint}&query=${encodeURIComponent(query)}`);
+                    const response = await secureFetch(`/includes/core/search.php?category=${options.apiEndpoint}&query=${encodeURIComponent(query)}`);
                     const data = await response.json();
                     if (data.error || !data.results || data.results.length === 0) throw new Error(data.error || 'No results found');
                     const listHtml = data.results.map(item =>
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const createCard = (data) => {
-                const url = data.isCustom ? `custom-${Date.now()}` : `includes/core/search.php?category=${options.apiEndpoint}&index=${data.index}`;
+                const url = data.isCustom ? `custom-${Date.now()}` : `/includes/core/search.php?category=${options.apiEndpoint}&index=${data.index}`;
                 const existingCard = cardsContainer.querySelector(`[data-item-url="${url}"]`);
                 if (existingCard) {
                     showNotification(`${data.name} is already on your sheet.`);
