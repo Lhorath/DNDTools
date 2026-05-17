@@ -15,16 +15,17 @@ $SITE_BASE_URL = '';
 // These variables hold the connection details for your database.
 // It is a security best practice to load these from environment variables
 // rather than hardcoding them directly in the file.
-$servername = "localhost";
-$username = "root";
-$password = "";
+$servername = "127.0.0.1";
+$port = 3306;
+$username = "website";
+$password = "dax123";
 $dbname = "dnd_tools";
 
 
 // SECTION 2: ESTABLISH CONNECTION
 // A new mysqli object is created, which attempts to establish a connection
 // to the database server using the credentials provided above.
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 
 // SECTION 3: CONNECTION ERROR HANDLING

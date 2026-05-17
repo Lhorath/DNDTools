@@ -17,14 +17,15 @@
 // --- SECTION 1: DATABASE CREDENTIALS ---
 // These variables hold the connection details for your database.
 // It is best practice to load these from environment variables rather than hardcoding them.
-$servername = "srv1846.hstgr.io";
-$username = "u971098166_dndtools";
-$password = "KqlDiXPX>+q4";
+$servername = "127.0.0.1";
+$port = 3306;
+$username = "website";
+$password = "dax123";
 $dbname = "u971098166_websitedb";
 
 // --- SECTION 2: ESTABLISH CONNECTION ---
 // A new MySQLi object is created to establish the connection to the database.
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // --- SECTION 3: CONNECTION ERROR HANDLING ---
 // This checks if the connection attempt failed.
