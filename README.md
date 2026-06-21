@@ -8,13 +8,25 @@ Live: http://dndtools.dackdns.ddns.net/
 
 # DND Tools
 
-Entry point `index.php` loads `includes/core/includes.php`, then assembles **header**, **body**, and **footer** from `core/`. Configure database and paths for your host before deploying.
+> PHP-based D&D utility site with shared includes, a database backend, and a whitelist page router.
+
+## Overview
+
+DND Tools is the original D&D Tools website. The entry point `index.php` loads `includes/core/includes.php` and assembles a **header**, **body**, and **footer** from `core/`. Pages are selected via a whitelist router.
 
 ## Requirements
 
 - PHP
 - MySQL (as wired in `includes/`)
+- A web server (Apache, Nginx, etc.)
+
+## Setup
+
+1. Configure your database credentials in `includes/`.
+2. Deploy the project folder to your web host.
+3. Point the document root at the project directory.
 
 ## License
 
-See [LICENSE](LICENSE) (MIT).
+MIT — see [LICENSE](LICENSE).  
+Copyright © 2026 [MacWeb Canada](https://macweb.ca) | Professional Online Solutions.
